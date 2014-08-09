@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<lint>
+    <issue id="NewApi">
+        <ignore path="src/frisbit/profit/FragmentoCrearCuenta.java" />
+        <ignore path="src/frisbit/profit/FragmentoInicial.java" />
+        <ignore path="src/frisbit/profit/FragmentoOlvidaPass.java" />
+        <ignore path="src/frisbit/profit/FragmentoOlvidarPass.java" />
+        <ignore path="src/frisbit/profit/FragmentoOlvidar_pass.java" />
+    </issue>
+</lint>
