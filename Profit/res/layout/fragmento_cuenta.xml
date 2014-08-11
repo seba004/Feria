@@ -4,22 +4,10 @@
     android:background="#FFFFFF"
     android:layout_height="match_parent" >
     
-
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="436dp"
+        android:layout_height="469dp"
         android:orientation="vertical" >
-
-        <EditText
-            android:id="@+id/nombre_cuenta"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/email_cuenta"
-            android:layout_alignParentTop="true"
-            android:layout_alignRight="@+id/email_cuenta"
-            android:layout_marginTop="28dp"
-            android:hint="Nombre y apellido"
-            android:inputType="textPersonName" />
 
 <requestFocus />
 
@@ -85,19 +73,54 @@
 
 
 
+
+        <EditText
+            android:id="@+id/sexo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/nacimiento_cuenta"
+            android:layout_below="@+id/nacimiento_cuenta"
+            android:layout_marginTop="18dp"
+            android:hint="Sexo: Masculino/femenino"
+            android:ems="10" />
+
+        <EditText
+            android:id="@+id/nombre_cuenta"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/email_cuenta"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="14dp"
+            android:ems="10"
+            android:hint="Nombre y apellido"
+            android:inputType="textPersonName" />
+        
         <Button
             android:id="@+id/crear_cuenta"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="24dp"
+            android:layout_below="@+id/altura"
             android:background="@drawable/forma_boton_inicio"
+            android:layout_marginTop="18dp"
             android:text="Crear"
             android:textColor="#FFFFFF"
             android:textSize="20sp" />
 
+        <EditText
+            android:id="@+id/altura"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/sexo"
+            android:layout_below="@+id/sexo"
+            android:layout_marginTop="16dp"
+            android:ems="10"
+            android:hint="Altura (cm)"
+            android:inputType="number" />
+
     </RelativeLayout>
     
+        
 
 </ScrollView>

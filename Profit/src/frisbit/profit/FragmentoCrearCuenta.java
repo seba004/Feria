@@ -31,6 +31,8 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 	private EditText pass1;
 	private EditText pass2;
 	private EditText fecha_nacimiento;
+	private EditText sexo;
+	private EditText altura;
 	private Button btn_ingresar;
 	
 	String URL_connect = "http://www.frisbit.net/nicolas/adduser.php";
@@ -38,7 +40,7 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 	private ProgressDialog pDialog;
 	boolean result_back;
 	
-	Validador validar = new Validador();
+	Validador validar=new Validador();
 	
 	@Override
 	   public View onCreateView(LayoutInflater inflater,
@@ -54,6 +56,8 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 		pass1=(EditText)Vista.findViewById(R.id.pass_cuenta);
 		pass2=(EditText)Vista.findViewById(R.id.check_pass_cuenta);
 		fecha_nacimiento=(EditText)Vista.findViewById(R.id.nacimiento_cuenta);
+		sexo=(EditText)Vista.findViewById(R.id.sexo);
+		altura=(EditText)Vista.findViewById(R.id.altura);
 		btn_ingresar=(Button)Vista.findViewById(R.id.crear_cuenta);
 		btn_ingresar.setOnClickListener(this);
 		return Vista;
@@ -69,20 +73,34 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 		String valor_nickname=nickname.getText().toString();
 		String valor_pass1=pass1.getText().toString();
 		String valor_pass2=pass2.getText().toString();
+		String valor_altura=altura.getText().toString();
+		String valor_sexo=sexo.getText().toString();
 		String valor_fecha_nacimiento=fecha_nacimiento.getText().toString();
 		
 		boolean validar_nombre = validar.validatename(valor_nombre);
 		boolean validar_email= validar.validateemail(valor_email);
 		boolean validar_pass= validar.validatepass(valor_pass1);
 		boolean validar_fecha=validar.validatedate(valor_fecha_nacimiento);
-		
+		boolean  validar_altura =validar.validatealtura(valor_altura);
+		boolean validar_sexo =validar.validatesexo(valor_sexo);
 		
 		if (validar_pass == false){
 			Toast.makeText(this.getActivity(), 
-					"contraseï¿½a invalida ingrese contraseï¿½a alfanumerica ", Toast.LENGTH_LONG).show();//validaciones
+					"contraseña invalida ingrese contraseña alfanumerica ", Toast.LENGTH_LONG).show();//validaciones
 			validador=1;
 		}
 		
+		if (validar_altura==false){
+			Toast.makeText(this.getActivity(), 
+					"Altura invalida ", Toast.LENGTH_LONG).show();//validaciones
+			validador=1;
+		}
+		
+		if (validar_sexo==false){
+			Toast.makeText(this.getActivity(), 
+					"Sexo invalida ", Toast.LENGTH_LONG).show();//validaciones
+			validador=1;
+		}
 		
 		if(!valor_pass1.equals(valor_pass2)){
 			Toast.makeText(this.getActivity(), 
