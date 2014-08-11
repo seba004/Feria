@@ -53,15 +53,7 @@
             android:label="@string/title_activity_interfaz_prueba" >
         </activity>
 
-        <activity
-            android:name=".ProximityActivity"
-            android:label="@string/title_activity_proximity" >
-            <intent-filter >
-                <action android:name="com.example.prueba5.activity.proximity"/>
-                <category android:name="android.intent.category.DEFAULT" />            
-            </intent-filter>
-        </activity>
-        
+       
         <activity
             android:name=".NotificationView"
             android:label="@string/title_activity_notification_view" >
