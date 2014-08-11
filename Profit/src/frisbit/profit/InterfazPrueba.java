@@ -32,12 +32,18 @@ public class InterfazPrueba extends ActionBarActivity {
 	 * Variables Geocerca
 	 */
 
-	//Variable correspondiente a la locación del usuario en la aplicación
+	//Variable correspondiente a la locaciÃ³n del usuario en la aplicaciÃ³n
     LocationManager locationManager;
     
-    //Variable correspondiente de "enviar" la información a la clase ProximityActivity.
+    //Variable correspondiente de "enviar" la informaciÃ³n a la clase ProximityActivity.
     PendingIntent pendingIntent;
-	
+    
+    
+    /*
+    *Variables agregadas para arreglar detalles de la geocerca
+    */
+	private static final String PROX_ALERT_INTENT ="frisbit.profit.ProximityAlert";
+    	ProximityActivity ProximityActivity= new ProximityActivity();
 	
 	
 
@@ -74,6 +80,7 @@ public class InterfazPrueba extends ActionBarActivity {
 				
 				Intent volver = new Intent(InterfazPrueba.this, MainActivity.class);
 				startActivity(volver);
+				unregisterReceiver(ProximityActivity);
 			}
 		});
 		
@@ -99,12 +106,12 @@ public class InterfazPrueba extends ActionBarActivity {
              * Funcion que se encarga de crear la geocerca en el Mapa.
              * in: Punto donde se creara geocerca, id de la geocerca.
              */
-            CrearGeocerca(new LatLng(-33.47958211050352,-70.73455732315),"1");
-            CrearGeocerca(new LatLng(-33.48968939543297,-70.61871472746),"2");
-            CrearGeocerca(new LatLng(-33.42917070261277,-70.62644317746),"3");
+            CrearGeocerca(new LatLng(-33.47958211050352,-70.73455732315),1,20);
+            CrearGeocerca(new LatLng(-33.48968939543297,-70.61871472746),2,20);
+            CrearGeocerca(new LatLng(-33.42917070261277,-70.62644317746),3,20);
             
-            
-            
+            IntentFilter filter = new IntentFilter(PROX_ALERT_INTENT);
+    	    registerReceiver(ProximityActivity, filter);
           
 	  }
         
@@ -136,11 +143,11 @@ public class InterfazPrueba extends ActionBarActivity {
 	 */
 	
 	
-	private void CrearGeocerca(LatLng point, String idGeo){
-        Intent proximityIntent = new Intent("com.example.prueba5.activity.proximity");
-        proximityIntent.putExtra("Id", idGeo);
-        pendingIntent = PendingIntent.getActivity(getBaseContext(), 0, proximityIntent,Intent.FLAG_ACTIVITY_NEW_TASK);
-        locationManager.addProximityAlert(point.latitude, point.longitude, 30, -1, pendingIntent);
+	private void CrearGeocerca(LatLng point, int idGeo, int radio){
+		Intent intent = new Intent(PROX_ALERT_INTENT);
+		intent.putExtra("idGeo", idGeo);
+		PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+		locationManager.addProximityAlert(point.latitude, point.longitude, radio, -1, proximityIntent);
 	}
 	
 	@Override
