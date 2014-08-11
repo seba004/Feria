@@ -79,7 +79,7 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 		
 		if (validar_pass == false){
 			Toast.makeText(this.getActivity(), 
-					"contraseña invalida ingrese contraseña alfanumerica ", Toast.LENGTH_LONG).show();//validaciones
+					"contraseï¿½a invalida ingrese contraseï¿½a alfanumerica ", Toast.LENGTH_LONG).show();//validaciones
 			validador=1;
 		}
 		
@@ -114,13 +114,12 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 			validador=1;
 		}
 		if(validador==0){
-			Toast.makeText(this.getActivity(), 
-		            "Todo ok", Toast.LENGTH_LONG).show();//validaciones
+//			Toast.makeText(this.getActivity(), "Todo ok", Toast.LENGTH_LONG).show();//validaciones
 			new asyncCreateAccount().execute(valor_nombre, valor_fecha_nacimiento, valor_email, valor_nickname, valor_pass1);	
 		}
 	}
 	
-	public boolean createAccount(String nombre, String fecha, String email, String username, String password ) {
+	public int createAccount(String nombre, String fecha, String email, String username, String password ) {
 		int accountStatus = -1;
 
 		/*
@@ -129,21 +128,15 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 		 * nuestro sistema para relizar la validacion
 		 */
 		ArrayList<NameValuePair> postparameters2send = new ArrayList<NameValuePair>();
-		/* INSERT INTO `persona`(`ID_persona`, `Nombre`, `fecha_nacimiento`, `correo`, `user`,
-		 *  `pass`, `puntos`)
-		 * VALUES ([value-1],[value-2],[value-3],[value-4],[value-5],[value-6],[value-7])
-		 * valor_nombre valor_email valor_nickname valor_pass1 valor_fecha_nacimiento 
-		 */
+	
+		postparameters2send.add(new BasicNameValuePair("nombre", nombre));
+		postparameters2send.add(new BasicNameValuePair("fecha", fecha));
+		postparameters2send.add(new BasicNameValuePair("email", email));
 		postparameters2send.add(new BasicNameValuePair("usuario", username));
 		postparameters2send.add(new BasicNameValuePair("password", password));
-		postparameters2send.add(new BasicNameValuePair("nombre", nombre));
-		postparameters2send.add(new BasicNameValuePair("email", email));
-		postparameters2send.add(new BasicNameValuePair("fecha", fecha));
-//		System.out.println(postparameters2send);
+		
 		// realizamos una peticion y como respuesta obtenes un array JSON
-		System.out.println("POST PRE");
 		JSONArray jdata = post.getserverdata(postparameters2send, URL_connect);
-		System.out.println("POST SEND");
 
 		// si lo que obtuvimos no es null
 		if (jdata != null && jdata.length() > 0) {
@@ -151,11 +144,11 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 			try {
 				// leemos el primer segmento en nuestro caso el unico
 				json_data = jdata.getJSONObject(0); 
-													
+				Log.e("nasa",json_data.toString());									
 				// accedemos al valor
-				accountStatus = json_data.getInt("logstatus");
+				accountStatus = json_data.getInt("accountStatus");
 				// muestro por log que obtuvimos
-				Log.e("loginstatus", "logstatus= " + accountStatus);
+				Log.e("accountStatus", "accountStatus= " + accountStatus);
 																
 										
 			} catch (JSONException e) {
@@ -165,15 +158,17 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 			// validamos el valor obtenido
 			if (accountStatus == 0) {// [{"logstatus":"0"}]
 				Log.e("accountStatus ", "valido");
-				return true;
-			} else {// [{"logstatus":"1"}]
+				return 0;
+			} else if (accountStatus == 2) {// [{"logstatus":"1"}]
+				return 2;
+			} else {
 				Log.e("accountStatus ", "invalido");
-				return false;
+				return 1;
 			}
 
 		} else { // json obtenido invalido verificar parte WEB.
 			Log.e("JSON  ", "ERROR");
-			return false;
+			return 1;
 		}
 	}
 	
@@ -199,14 +194,17 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 			email = params[2];
 			user = params[3];
 			pass = params[4];
-			System.out.println("doInBackground"+nombre+fecha+email+user+pass);
+
 			// enviamos y recibimos y analizamos los datos en segundo plano.
-			if (createAccount(nombre, fecha, email, user, pass) == true) {
+			int result = createAccount(nombre, fecha, email, user, pass);
+			if (result == 0) {
 				System.out.println("True");
 				return "ok"; // login valido
-			} else {
-				System.out.println("False");
-				return "err"; // login invalido
+			} else if (result == 2){
+				return "2"; // login invalido
+			}
+			else {
+				return "err";
 			}
 		}
 
@@ -220,23 +218,19 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 			Log.e("onPostExecute=", "" + result);
 
 			if (result.equals("ok")) {
-
-//				Intent i = new Intent(Login.this, HiScreen.class);
-//				Intent i = new Intent(getActivity(), HiScreen.class);
-//				i.putExtra("user", user);
-//				startActivity(i);
-
-				String msg = "VERY GOOD MAN - Cuenta Creada";
-				Context cont = getActivity().getApplicationContext();
-				Toast toast1 = Toast.makeText(cont, msg, Toast.LENGTH_SHORT);
-				toast1.show();
+				String msg = "Cuenta creada con Ã©xito";
+				Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 				
 				Intent actividad_iniciar = new Intent(getActivity(), InterfazPrueba.class);
 				startActivity(actividad_iniciar);
 
+			} else if (result.equals("2")) {
+				Toast.makeText(getActivity().getApplicationContext(), "El email ya estÃ¡ en uso", Toast.LENGTH_SHORT).show();
 			} else {
 //				err_login();
-				System.out.println("ERROR LOGIN!!");
+				String msg = "Error al procesar la solicitud";
+				Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+
 			}
 		}
 	}

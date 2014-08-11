@@ -96,7 +96,7 @@ public class FragmentoInicial extends Fragment implements  OnClickListener {
 			
 			
 			/*
-			 * Luego de hacer Login se dirigirá a la pantasha principal.
+			 * Luego de hacer Login se dirigirï¿½ a la pantasha principal.
 			 */
 			
 			
@@ -117,7 +117,7 @@ public class FragmentoInicial extends Fragment implements  OnClickListener {
 		 * Valida el estado del logueo solamente necesita como parametros el usuario
 		 * y passw
 		 */
-		public boolean loginstatus(String username, String password) {
+		public boolean loginstatus(String email, String password) {
 			int logstatus = -1;
 
 			/*
@@ -127,7 +127,7 @@ public class FragmentoInicial extends Fragment implements  OnClickListener {
 			 */
 			ArrayList<NameValuePair> postparameters2send = new ArrayList<NameValuePair>();
 
-			postparameters2send.add(new BasicNameValuePair("usuario", username));
+			postparameters2send.add(new BasicNameValuePair("email", email));
 			postparameters2send.add(new BasicNameValuePair("password", password));
 
 			// realizamos una peticion y como respuesta obtenes un array JSON
@@ -154,13 +154,12 @@ public class FragmentoInicial extends Fragment implements  OnClickListener {
 
 				// validamos el valor obtenido
 				if (logstatus == 0) {// [{"logstatus":"0"}]
-					Log.e("loginstatus ", "invalido");
-					return false;
-				} else {// [{"logstatus":"1"}]
 					Log.e("loginstatus ", "valido");
-					Intent actividad_iniciar = new Intent(getActivity(), InterfazPrueba.class);
-					startActivity(actividad_iniciar);
 					return true;
+				} else {// [{"logstatus":"1"}]
+					Log.e("loginstatus ", "invalido");
+					
+					return false;
 				}
 
 			} else { // json obtenido invalido verificar parte WEB.
@@ -182,7 +181,7 @@ public class FragmentoInicial extends Fragment implements  OnClickListener {
 
 		class asynclogin extends AsyncTask<String, String, String> {
 
-			String user, pass;
+			String email, pass;
 
 			protected void onPreExecute() {
 				// para el progress dialog
@@ -197,7 +196,7 @@ public class FragmentoInicial extends Fragment implements  OnClickListener {
 			protected String doInBackground(String... params) {
 				System.out.println("doInBackground");
 				// obtnemos usr y pass
-				user = params[0];
+				email = params[0];
 				pass = params[1];
 				
 				//se crean las preferncias
@@ -206,14 +205,13 @@ public class FragmentoInicial extends Fragment implements  OnClickListener {
 				
 
 			    //se guarda el mail, la pass y un string por si a caso
-				 editor.putString("email", user);
+				 editor.putString("email", email);
 				 editor.putString("pass", pass);
 				 editor.putString("logged", "logged");
 				 editor.commit();
 				 
 				// enviamos y recibimos y analizamos los datos en segundo plano.
-				if (loginstatus(user, pass) == true) {
-					System.out.println("True");
+				if (loginstatus(email, pass) == true) {
 					return "ok"; // login valido
 				} else {
 					System.out.println("False");
@@ -232,17 +230,11 @@ public class FragmentoInicial extends Fragment implements  OnClickListener {
 				Log.e("onPostExecute=", "" + result);
 
 				if (result.equals("ok")) {
-
-//					Intent i = new Intent(Login.this, HiScreen.class);
-//					Intent i = new Intent(getActivity(), HiScreen.class);
-//					i.putExtra("user", user);
-//					startActivity(i);
-					String msg = "VERY GOOD MAN";
+					Intent actividad_iniciar = new Intent(getActivity(), InterfazPrueba.class);
+					startActivity(actividad_iniciar);
 					
-					Toast toast1 = Toast.makeText(getActivity().getApplicationContext(), 
-							msg, Toast.LENGTH_SHORT);
-					
-					toast1.show();
+					String msg = "Ha iniciado sesiÃ³n";
+					Toast.makeText(getActivity().getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
 
 				} else {
 					err_login();
