@@ -38,7 +38,7 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 	private ProgressDialog pDialog;
 	boolean result_back;
 	
-	Validador validar=new Validador();
+	Validador validar = new Validador();
 	
 	@Override
 	   public View onCreateView(LayoutInflater inflater,

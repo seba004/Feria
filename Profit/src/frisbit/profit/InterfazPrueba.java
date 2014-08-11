@@ -1,5 +1,15 @@
 package frisbit.profit;
 
+import java.util.ArrayList;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import test.login.library.Httppostaux;
+
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.maps.MapFragment;
@@ -12,17 +22,21 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import android.support.v7.app.ActionBarActivity;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.location.LocationManager;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 
 public class InterfazPrueba extends ActionBarActivity {
@@ -44,8 +58,14 @@ public class InterfazPrueba extends ActionBarActivity {
     *Variables agregadas para arreglar detalles de la geocerca
     */
 	private static final String PROX_ALERT_INTENT ="frisbit.profit.ProximityAlert";
-    	ProximityActivity ProximityActivity= new ProximityActivity();
+    ProximityActivity ProximityActivity= new ProximityActivity();
 	
+    /* para consultar a la basededatos */	
+	String URL_connect = "http://www.frisbit.net/nicolas/getGeofences.php";
+	Httppostaux post;
+	private ProgressDialog pDialog;
+	boolean result_back;
+	/* para consultar a la basededatos */
 	
 
 	@Override
@@ -53,7 +73,8 @@ public class InterfazPrueba extends ActionBarActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_interfaz_prueba);
 		
-		
+		//
+		post = new Httppostaux();
 		
 		Button bt_it_mapa=(Button)findViewById(R.id.button1);
 		bt_it_mapa.setOnClickListener(new View.OnClickListener() {
@@ -107,13 +128,10 @@ public class InterfazPrueba extends ActionBarActivity {
              * Funcion que se encarga de crear la geocerca en el Mapa.
              * in: Punto donde se creara geocerca, id de la geocerca.
              */
-            CrearGeocerca(new LatLng(-33.47958211050352,-70.73455732315),1,20);
-            CrearGeocerca(new LatLng(-33.48968939543297,-70.61871472746),2,20);
-            CrearGeocerca(new LatLng(-33.42917070261277,-70.62644317746),3,20);
             
-            IntentFilter filter = new IntentFilter(PROX_ALERT_INTENT);
-    	    registerReceiver(ProximityActivity, filter);
-          
+            new asyncGetLugares().execute();
+            
+           
 	  }
         
 	
@@ -161,6 +179,55 @@ public class InterfazPrueba extends ActionBarActivity {
 	    return super.onKeyDown(keyCode, event);
 	}
 	
+	/* -------------------------------------------------------------------------------- */
+	public JSONArray getLugares() {
+
+		ArrayList<NameValuePair> postparameters2send = new ArrayList<NameValuePair>();
+		String nombre = "l";
+		postparameters2send.add(new BasicNameValuePair("nombre", nombre));
+
+		
+		// realizamos una peticion y como respuesta obtenes un array JSON
+		Log.e("CARMONIN-ALERT","ERROR3");
+		JSONArray jdata = post.getserverdata(postparameters2send, URL_connect);
+		Log.e("CARMONIN-ALERT","ERROR4");
+		return jdata;
+	}
+	
+	/* -------------------------------------------------------------------------------- */ 
+	class asyncGetLugares extends AsyncTask<String, String, String> {
+
+		protected String doInBackground(String... params) {
+			
+			JSONArray misLugares = getLugares();
+            JSONObject json_data;
+            
+            try {
+            	
+            	
+            	int total = misLugares.length();
+            	for (int i = 0; i < total; i++) {
+            		json_data = misLugares.getJSONObject(i);
+            		
+            		String latitud = json_data.getString("latitud");
+            		String longitud = json_data.getString("longitud");
+            		int radio = json_data.getInt("radio");            		
+            		CrearGeocerca(new LatLng(Double.parseDouble(latitud), Double.parseDouble(longitud)),i+1,radio);
+            	}
+            	
+            	IntentFilter filter = new IntentFilter(PROX_ALERT_INTENT);
+        	    registerReceiver(ProximityActivity, filter);
+
+			} catch (JSONException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+            return "error";
+			
+		} // end... doInBackground.
+	} // end class asynctask
+	
+	/* -------------------------------------------------------------------------------- */
 	
 	
 }
