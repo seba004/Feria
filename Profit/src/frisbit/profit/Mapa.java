@@ -27,6 +27,7 @@ import android.util.Log;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.IntentFilter;
+import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class Mapa extends FragmentActivity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_mapa);
 		post = new Httppostaux();
+		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
         if(status!=ConnectionResult.SUCCESS){ // Google Play Services are not available
         	 

@@ -29,14 +29,13 @@ public class ProximityActivity extends BroadcastReceiver {
     @Override
 	public void onReceive(Context context, Intent intent) {
 		// TODO Auto-generated method stub
-    	Toast.makeText(context,"Probando"  ,Toast.LENGTH_LONG).show();
     	String key = LocationManager.KEY_PROXIMITY_ENTERING;
     	Boolean entering = intent.getBooleanExtra(key, false);
     	
     	
     	if (entering){
     		notificationTitle="Has entrado a la Geocerca" + intent.getStringExtra("idGeo");
-            notificationContent="¿Quieres entrenar acá?";
+            notificationContent="Quieres entrenar aca?";
             tickerMessage = "Profit ha encontrado un lugar para entrenar!";
     	}
     	else{
