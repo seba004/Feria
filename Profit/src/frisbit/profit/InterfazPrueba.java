@@ -116,6 +116,19 @@ public class InterfazPrueba extends ActionBarActivity {
 			}
 		});
 		
+		Button bt_entrena=(Button)findViewById(R.id.button3);
+		bt_entrena.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+					
+				Intent actividad_iniciar = new Intent(InterfazPrueba.this, NotificationView.class);
+				startActivity(actividad_iniciar);
+						
+			}
+		});
+		
+		
 		// Obtiene el estado de GooglePlayServicesUtil
         int status = GooglePlayServicesUtil.isGooglePlayServicesAvailable(getBaseContext());
         
