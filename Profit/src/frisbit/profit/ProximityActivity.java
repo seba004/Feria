@@ -34,9 +34,45 @@ public class ProximityActivity extends BroadcastReceiver {
     	
     	
     	if (entering){
-    		notificationTitle="Has entrado a la Geocerca" + intent.getStringExtra("idGeo");
+    		notificationTitle="Entrando a Geocerca " + intent.getStringExtra("idGeo");
             notificationContent="Quieres entrenar aca?";
             tickerMessage = "Profit ha encontrado un lugar para entrenar!";
+            
+            Intent notificationIntent = new Intent(context,NotificationView.class);
+            notificationIntent.putExtra("content", notificationContent );
+            
+            // This is needed to make this intent different from its previous intents 
+            notificationIntent.setData(Uri.parse("tel:/"+ (int)System.currentTimeMillis()));
+     
+            //Creating different tasks for each notification. See the flag Intent.FLAG_ACTIVITY_NEW_TASK 
+            PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
+     
+            // Getting the System service NotificationManager 
+            NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+     
+            // Configuring notification builder to create a notification 
+            NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
+                    .setWhen(System.currentTimeMillis())
+                    .setContentText(notificationContent)
+                    .setContentTitle(notificationTitle)
+                    .setSmallIcon(R.drawable.ic_launcher)
+                    .setAutoCancel(true)
+                    .setTicker(tickerMessage)
+                    .setContentIntent(pendingIntent);
+     
+            // Creating a notification from the notification builder 
+            Notification notification = notificationBuilder.build();
+     
+            // Sending the notification to system.
+            //* The first argument ensures that each notification is having a unique id
+            //* If two notifications share same notification id, then the last notification replaces the first notification
+            //* 
+            nManager.notify((int)System.currentTimeMillis(), notification);
+            
+            
+            
+            
+            
     	}
     	else{
     		notificationTitle="Has salido de la Geocerca";
@@ -46,36 +82,7 @@ public class ProximityActivity extends BroadcastReceiver {
     	}
     	
     	
-    	 Intent notificationIntent = new Intent(context,NotificationView.class);
-         notificationIntent.putExtra("content", notificationContent );
-         
-         // This is needed to make this intent different from its previous intents 
-         notificationIntent.setData(Uri.parse("tel:/"+ (int)System.currentTimeMillis()));
-  
-         //Creating different tasks for each notification. See the flag Intent.FLAG_ACTIVITY_NEW_TASK 
-         PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, notificationIntent, Intent.FLAG_ACTIVITY_NEW_TASK);
-  
-         // Getting the System service NotificationManager 
-         NotificationManager nManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-  
-         // Configuring notification builder to create a notification 
-         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context)
-                 .setWhen(System.currentTimeMillis())
-                 .setContentText(notificationContent)
-                 .setContentTitle(notificationTitle)
-                 .setSmallIcon(R.drawable.ic_launcher)
-                 .setAutoCancel(true)
-                 .setTicker(tickerMessage)
-                 .setContentIntent(pendingIntent);
-  
-         // Creating a notification from the notification builder 
-         Notification notification = notificationBuilder.build();
-  
-         // Sending the notification to system.
-         //* The first argument ensures that each notification is having a unique id
-         //* If two notifications share same notification id, then the last notification replaces the first notification
-         //* 
-         nManager.notify((int)System.currentTimeMillis(), notification);
+    	 
 	}
 	
 }

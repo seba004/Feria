@@ -165,8 +165,8 @@ public class InterfazPrueba extends ActionBarActivity {
 	
 	private void CrearGeocerca(LatLng point, int idGeo, int radio){
 		Intent intent = new Intent(PROX_ALERT_INTENT);
-		intent.putExtra("idGeo", idGeo);
-		PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
+		intent.putExtra("idGeo", Integer.toString(idGeo));
+		PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		locationManager.addProximityAlert(point.latitude, point.longitude, radio, -1, proximityIntent);
 	}
 	
@@ -186,12 +186,9 @@ public class InterfazPrueba extends ActionBarActivity {
 		ArrayList<NameValuePair> postparameters2send = new ArrayList<NameValuePair>();
 		String nombre = "l";
 		postparameters2send.add(new BasicNameValuePair("nombre", nombre));
-
 		
 		// realizamos una peticion y como respuesta obtenes un array JSON
-		Log.e("CARMONIN-ALERT","ERROR3");
 		JSONArray jdata = post.getserverdata(postparameters2send, URL_connect);
-		Log.e("CARMONIN-ALERT","ERROR4");
 		return jdata;
 	}
 	
