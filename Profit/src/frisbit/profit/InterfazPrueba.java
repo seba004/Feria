@@ -188,7 +188,7 @@ public class InterfazPrueba extends ActionBarActivity {
 	private void CrearGeocerca(LatLng point, int idGeo, int radio){
 		Intent intent = new Intent(PROX_ALERT_INTENT);
 		intent.putExtra("idGeo", Integer.toString(idGeo));
-		PendingIntent proximityIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent proximityIntent = PendingIntent.getBroadcast(this, idGeo-1, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		locationManager.addProximityAlert(point.latitude, point.longitude, radio, -1, proximityIntent);
 	}
 	
