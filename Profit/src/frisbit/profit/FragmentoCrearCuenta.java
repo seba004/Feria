@@ -86,7 +86,7 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 		
 		if (validar_pass == false){
 			Toast.makeText(this.getActivity(), 
-					"contraseña invalida ingrese contraseña alfanumerica ", Toast.LENGTH_LONG).show();//validaciones
+					"contraseï¿½a invalida ingrese contraseï¿½a alfanumerica ", Toast.LENGTH_LONG).show();//validaciones
 			validador=1;
 		}
 		
@@ -133,11 +133,11 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 		}
 		if(validador==0){
 //			Toast.makeText(this.getActivity(), "Todo ok", Toast.LENGTH_LONG).show();//validaciones
-			new asyncCreateAccount().execute(valor_nombre, valor_fecha_nacimiento, valor_email, valor_nickname, valor_pass1);	
+			new asyncCreateAccount().execute(valor_nombre, valor_fecha_nacimiento, valor_email, valor_nickname, valor_pass1, valor_altura, valor_sexo);	
 		}
 	}
 	
-	public int createAccount(String nombre, String fecha, String email, String username, String password ) {
+	public int createAccount(String nombre, String fecha, String email, String username, String password, String genero, String altura) {
 		int accountStatus = -1;
 
 		/*
@@ -152,6 +152,8 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 		postparameters2send.add(new BasicNameValuePair("email", email));
 		postparameters2send.add(new BasicNameValuePair("usuario", username));
 		postparameters2send.add(new BasicNameValuePair("password", password));
+		postparameters2send.add(new BasicNameValuePair("genero", genero));
+		postparameters2send.add(new BasicNameValuePair("altura", altura));
 		
 		// realizamos una peticion y como respuesta obtenes un array JSON
 		JSONArray jdata = post.getserverdata(postparameters2send, URL_connect);
@@ -193,7 +195,7 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 	class asyncCreateAccount extends AsyncTask<String, String, String> {
 //		asyncCreateAccount().execute(valor_nombre, valor_fecha_nacimiento, valor_email, valor_nickname, valor_pass1);
 		
-		String nombre, fecha, email, user, pass;
+		String nombre, fecha, email, user, pass, genero, altura;
 
 		protected void onPreExecute() {
 			// para el progress dialog
@@ -212,9 +214,11 @@ public class FragmentoCrearCuenta extends Fragment  implements  OnClickListener 
 			email = params[2];
 			user = params[3];
 			pass = params[4];
+			genero = params[5];
+			altura = params[6];
 
 			// enviamos y recibimos y analizamos los datos en segundo plano.
-			int result = createAccount(nombre, fecha, email, user, pass);
+			int result = createAccount(nombre, fecha, email, user, pass, genero, altura);
 			if (result == 0) {
 				System.out.println("True");
 				return "ok"; // login valido
