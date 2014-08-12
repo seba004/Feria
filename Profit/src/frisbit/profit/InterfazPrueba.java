@@ -37,6 +37,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
@@ -73,6 +74,14 @@ public class InterfazPrueba extends ActionBarActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_interfaz_prueba);
+		
+		
+		SharedPreferences prefs = getSharedPreferences("prefs",Context.MODE_PRIVATE); 
+		String email = prefs.getString("email", null);
+
+		TextView cambiarnombre = (TextView)findViewById(R.id.textView2);
+		cambiarnombre.setText(email);
+		
 		setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 		//
 		post = new Httppostaux();

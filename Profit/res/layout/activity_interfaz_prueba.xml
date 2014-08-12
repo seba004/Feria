@@ -9,27 +9,47 @@
     android:screenOrientation="portrait"
     tools:context="frisbit.profit.InterfazPrueba" >
 
-     <Button
+    <Button
         android:id="@+id/button2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignLeft="@+id/button1"
-        android:layout_below="@+id/button1"
-        android:layout_marginTop="66dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="165dp"
         android:background="@drawable/forma_boton_logout"
         android:text="Logout"
         android:textColor="#FFFFFF" />
-    
 
     <Button
         android:id="@+id/button1"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginLeft="46dp"
-        
+        android:layout_above="@+id/button2"
+        android:layout_alignLeft="@+id/button2"
+        android:layout_marginBottom="76dp"
         android:background="@drawable/forma_boton_inicio"
-        android:textColor="#FFFFFF"
-        android:text="Mapa!" />
+        android:text="Mapa"
+        android:textColor="#FFFFFF" />
+
+    <TextView
+        android:id="@+id/textView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/button1"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="30dp"
+        android:text="Bienvenido !"
+        android:textAppearance="?android:attr/textAppearanceSmallPopupMenu"
+        android:textColor="#0099CC"
+        android:textSize="28sp" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/textView1"
+        android:layout_below="@+id/textView1"
+        android:text="mail"
+        android:textSize="16sp" />
 
 </RelativeLayout>
