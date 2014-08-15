@@ -9,8 +9,8 @@
 *.class
 
 # Generated files
-bin/
-gen/
+Profit/bin/
+.metadata
 
 # Gradle files
 .gradle/
